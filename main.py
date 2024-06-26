@@ -2,7 +2,6 @@ def example():
     print('Hello world')
 
 
-<<<<<<< HEAD
 def introducer():
     print('Dratuti')
 

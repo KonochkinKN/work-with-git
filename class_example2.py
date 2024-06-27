@@ -20,8 +20,8 @@ class Publication:
 
     # Метод класса, общий для всех
     @classmethod
-    def get_default_edition(self):
-        return self.default_format, self.default_edition
+    def get_default_edition(cls):
+        return cls.default_format, cls.default_edition
 
     # Публичный метод, работающий с приватным аттрибутом
     def get_udc(self):

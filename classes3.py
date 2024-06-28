@@ -1,5 +1,7 @@
 from functools import total_ordering
 from dataclasses import dataclass
+from multipledispatch import dispatch
+from functools import singledispatch
 
 
 def total_ordering_example():
@@ -19,10 +21,9 @@ def total_ordering_example():
         def __eq__(self, other):
             return self.value == other.value
 
-
-    print(Number(20) > Number(3))
-    # True
     print(Number(1) < Number(5))
+    # True
+    print(Number(20) > Number(3))
     # True
     print(Number(15) >= Number(15))
     # True
@@ -42,7 +43,6 @@ def data_class_example():
         author: str
         year: int
         publisher: str
-    
 
     pub = Publication(title='Мастер и Маргарита', 
                       author='Булгаков М.А.',
@@ -68,5 +68,43 @@ def singleton_example():
     print("Object created", id(s2))
 
 
+def dispatch_example():
+    @dispatch((int, float), (int, float))
+    def add(a: int, b: int):
+        return float(a + b)
+
+    @dispatch(int, str)
+    def add(a, b):
+        return str(a) + b
+
+    @dispatch(str, int)
+    def add(a, b):
+        return a + str(b)
+
+    print(add(5, 3.))
+    print(add(5, '3.'))
+
+
+def single_dispatch_example():
+    @singledispatch
+    def add(a, b):
+        raise NotImplementedError("Тип не поддерживается")
+
+    @add.register
+    def _(a: float, b: float):
+        return a + b
+
+    @add.register
+    def _(a: str, b: float):
+        return a + str(b)
+
+    @add.register
+    def _(a: float, b: str):
+        return str(a) + b
+
+    print(add(5., '3.'))
+    print(add(5., 3.))
+
+
 if __name__ == "__main__":
-    data_class_example()
+    single_dispatch_example()

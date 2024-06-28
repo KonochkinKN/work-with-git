@@ -22,26 +22,5 @@ def info0():
     print('for PR')
 
 
-def info2():
-    print('added new branch')
-
-
-def info1():
-    print('add new branch')
-
-
-def Disco():
-    print('Detective Harrier Debua')
-    print('You are terrible')
-
-
-def info5():
-    print('added new branch')
-
-
-def info6():
-    print('added new branch')
-
-
 if __name__ == '__main__':
-    Disco()
+    info0()

@@ -1,10 +1,6 @@
 
 
 class CustomInteger(type):
-    val: int = 0
-    __bits: int = 8
-    __sign: bool = True
-    
     def __new__(cls, name, superclasses, attributes):
         custom_int = super().__new__(cls, name, superclasses, attributes)
         attrs = name.split('int')
@@ -25,35 +21,22 @@ class CustomInteger(type):
         if not cls.__sign and value < 0:
             n = abs(value) // cls.__shift
             cls.val = value + (n + 1) * cls.__shift
+        elif not cls.__sign:
+            cls.val = value % cls.__shift
         else:
             cls.val = value + cls.__shift/2
             cls.val %= cls.__shift
             cls.val -= cls.__shift/2
         cls.val = int(cls.val)
-        print(f'{value}->{cls.val}')
     
     def __add(cls, other):
         smm = cls.val + other.val
-        if cls.__sign:
-            smm += cls.__shift/2
-            smm %= cls.__shift
-            smm -= cls.__shift/2
-        else:
-            smm %= cls.__shift
         _sum = CustomInteger(cls.__class__.__name__, (int,), {})
         smm = _sum(smm)
         return smm
     
     def __sub(cls, other):
         dif = cls.val - other.val
-        if cls.__sign:
-            dif += cls.__shift/2
-            dif %= cls.__shift
-            dif -= cls.__shift/2
-        else:
-            dif %= cls.__shift
-            if dif < 0:
-                dif += cls.__shift
         _dif = CustomInteger(cls.__class__.__name__, (int,), {})
         dif = _dif(dif)
         return dif
@@ -94,7 +77,20 @@ def test_int16():
     print(type(f), f'{c} - {d} = {f}')
 
 
+def metaclass_example():
+    meta = type('MyMeta', (), {})
+    meta.attr1 = 5
+    meta.attr2 = 7
+    print(meta.__dict__)
+    # print(type(meta))
+
+    m = meta()
+    print(m.attr1)
+    print(m.__dict__)
+    print(type(m))
+
+
 if __name__ == '__main__':
-    test_uint8()
+    metaclass_example()
 
 

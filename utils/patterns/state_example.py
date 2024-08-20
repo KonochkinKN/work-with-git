@@ -14,8 +14,11 @@ class Computer:
         self._state = state
         self._state.context = self
 
-    def push_button(self):
-        self._state.push_button()
+    def push_reboot(self):
+        self._state.reboot()
+
+    def push_power(self):
+        self._state.switch_power()
 
     def do_nothing(self):
         self._state.wait_5_mins()
@@ -31,7 +34,11 @@ class State(ABC):
         self._context = context
 
     @abstractmethod
-    def push_button(self) -> None:
+    def reboot(self) -> None:
+        pass
+
+    @abstractmethod
+    def switch_power(self) -> None:
         pass
 
     @abstractmethod
@@ -40,8 +47,13 @@ class State(ABC):
 
 
 class PoweredOn(State):
-    def push_button(self) -> None:
-        print("Нажата кнопка включения/выключения")
+    def reboot(self) -> None:
+        print("Нажата кнопка перезагрузки")
+        print("Компьютер перезагружается")
+        self.context.transition_to(Reboot())
+
+    def switch_power(self) -> None:
+        print("Нажата кнопка питания")
         print("Компьютер выключается")
         self.context.transition_to(PoweredOff())
 
@@ -52,34 +64,58 @@ class PoweredOn(State):
 
 
 class PoweredOff(State):
-    def push_button(self) -> None:
-        print("Нажата кнопка включения/выключения")
+    def reboot(self) -> None:
+        print("Нажата кнопка перезагрузки")
+        print("Ничего не происходит")
+
+    def switch_power(self) -> None:
+        print("Нажата кнопка питания")
         print("Компьютер включается")
         self.context.transition_to(PoweredOn())
 
     def wait_5_mins(self) -> None:
         print("Прошло 5 минут")
-        print("Ничего не меняется")
+        print("Ничего не происходит")
 
 
 class Hibernation(State):
-    def push_button(self) -> None:
-        print("Нажата кнопка включения/выключения")
+    def reboot(self) -> None:
+        print("Нажата кнопка перезагрузки")
+        print("Компьютер перезагружается")
+        self.context.transition_to(Reboot())
+
+    def switch_power(self) -> None:
+        print("Нажата кнопка питания")
         print("Компьютер включается")
         self.context.transition_to(PoweredOn())
 
     def wait_5_mins(self) -> None:
         print("Прошло 5 минут")
-        print("Ничего не меняется")
+        print("Ничего не происходит")
+
+
+class Reboot(State):
+    def reboot(self) -> None:
+        print("Нажата кнопка перезагрузки")
+        print("Ничего не происходит")
+
+    def switch_power(self) -> None:
+        print("Нажата кнопка питания")
+        print("Компьютер выключается")
+        self.context.transition_to(PoweredOff())
+
+    def wait_5_mins(self) -> None:
+        print("Прошло 5 минут")
+        print("Компьютер включается")
+        self.context.transition_to(PoweredOn())
 
 
 if __name__ == "__main__":
-    # Клиентский код.
-
+    # Клиентский код
     computer = Computer(PoweredOff())
-    computer.push_button()
+    computer.push_power()
     computer.do_nothing()
     computer.do_nothing()
-    computer.push_button()
-    computer.push_button()
+    computer.push_reboot()
     computer.do_nothing()
+    computer.push_power()

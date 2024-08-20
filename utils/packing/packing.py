@@ -48,11 +48,17 @@ class Car:
 
 
 if __name__ == '__main__':
-    car1 = Car("Ford", "Mustang", 1967, (0, 0, 255))
-    car2 = Car("Chevrolet", "Corvette", 1971, (255, 0, 0))
+    # car1 = Car("Ford", "Mustang", 1967, (0, 0, 255))
+    # car2 = Car("Chevrolet", "Corvette", 1971, (255, 0, 0))
     # car1.save_with_json('data.json')
     # car2.load_with_json('data.json')
-    car1.save_with_pickle('data.pickle')
-    car2.load_with_pickle('data.pickle')
-    print(car2)
+    # car1.save_with_pickle('data.pickle')
+    # car2.load_with_pickle('data.pickle')
+    # print(car2)
+    a = [67, 5]
+    b = a[:]
+    c = b.copy()
+    print(a, b, c)
+    b.append(3)
+    print(a, b, c)
 

@@ -4,7 +4,7 @@ from typing import Any, List
 
 
 class AlphabeticalOrderIterator(Iterator):
-   # текущее положение обхода
+    # текущее положение обхода
     _position: int = None
     # шаг обхода
     _step: int = 1
@@ -29,17 +29,20 @@ class WordsCollection(Iterable):
         self._collection = collection
 
     def __iter__(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection)
+        return AlphabeticalOrderIterator(self._collection, 2)
 
     def get_reverse_iterator(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection, -1)
+        return AlphabeticalOrderIterator(self._collection, -3)
 
     def add_item(self, item: Any):
         self._collection.append(item)
 
 
 if __name__ == "__main__":
-    collection = WordsCollection(['A', 'B', 'C', 'D'])
+    collection = WordsCollection(['A', 'B', 'C', 'D', 'E'])
+
+    for c in collection:
+        print(c)
 
     print("Прямой проход:")
     print("\n".join(collection))

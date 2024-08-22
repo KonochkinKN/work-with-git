@@ -29,10 +29,10 @@ class WordsCollection(Iterable):
         self._collection = collection
 
     def __iter__(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection, 2)
+        return AlphabeticalOrderIterator(self._collection)
 
-    def get_reverse_iterator(self) -> AlphabeticalOrderIterator:
-        return AlphabeticalOrderIterator(self._collection, -3)
+    def get_custom_iterator(self, step) -> AlphabeticalOrderIterator:
+        return AlphabeticalOrderIterator(self._collection, step)
 
     def add_item(self, item: Any):
         self._collection.append(item)
@@ -49,4 +49,4 @@ if __name__ == "__main__":
     print("")
 
     print("Обратный проход:")
-    print("\n".join(collection.get_reverse_iterator()), end="")
+    print("\n".join(collection.get_custom_iterator(-1)), end="")

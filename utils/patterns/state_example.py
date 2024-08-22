@@ -6,8 +6,12 @@ class Computer:
     """ Контекст работы состояний """
     _state = None
 
+
     def __init__(self, state: State) -> None:
         self.transition_to(state)
+    
+    def current_state(self):
+        return self._state
 
     def transition_to(self, state: State):
         print(f"Компьютер: переход в состояние {type(state).__name__}")

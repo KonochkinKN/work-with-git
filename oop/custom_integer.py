@@ -15,6 +15,8 @@ class CustomInteger(type):
         custom_int.__str__ = cls.__str
         custom_int.__add__ = cls.__add
         custom_int.__sub__ = cls.__sub
+        custom_int.__eq__ = cls.__eq
+        custom_int.__repr__ = cls.__repr
         return custom_int
     
     def __init(cls, value):
@@ -44,14 +46,17 @@ class CustomInteger(type):
     def __str(cls):
         return f'{cls.val}'
 
-    def __type(cls):
+    def __eq(cls, other):
+        return cls.val == other.val
+
+    def __repr(cls):
         if cls.__sign:
             return f'int{cls.__bits}'
         else:
             return f'uint{cls.__bits}'
     
     def __str__(cls):
-        return f"<class '{cls.__type()}'>"
+        return f"<class '{cls.__repr()}'>"
 
 
 def test_uint8():

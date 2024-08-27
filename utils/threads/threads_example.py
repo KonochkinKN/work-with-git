@@ -1,7 +1,7 @@
+import threading
 from threading import Thread, Lock, Event
 from time import sleep
 import os
-clear = lambda: os.system('cls')
 
 
 def simple_threads_example():
@@ -30,7 +30,7 @@ def counter_example():
     def timer_3min(event):
         for i in range(180):
             sleep(1)
-            clear()
+            os.system('cls')
             print('Счетчик:', i)
             print('Чтобы остановить счетчик, введите "s"')
             if event.is_set():
@@ -47,6 +47,18 @@ def counter_example():
         if exit == 's':
             stop.set()
             break
+
+
+def recursion_threading():
+    def delayed_print(cnt):
+        sleep(1)
+        os.system('cls')
+        print(f'all threads: {threading.active_count()}')
+        print(f'{cnt = }')
+        t = Thread(target=delayed_print, args=[cnt+1])
+        t.start()
+
+    delayed_print(1)
 
 
 counter = 0
@@ -77,5 +89,52 @@ def locking_example():
     t3.start()
 
 
+def traffic_light():
+    green = Lock()
+    traffic_off = Event()
+    button_pushed = Event()
+
+    def cars_traffic(direction):
+        while not traffic_off.is_set():
+            green.acquire()
+            print(f'Едут автомобили по {direction}')
+            sleep(3)
+            green.release()
+            sleep(0.1)
+
+    def people_traffic():
+        while not traffic_off.is_set():
+            if button_pushed.is_set():
+                green.acquire()
+                print('Идут пешеходы')
+                sleep(1)
+                green.release()
+
+    def traffic_menu():
+        while not traffic_off.is_set():
+            action = input("Выберите действие:\n"
+                           "\t1) Зеленый для пешеходов (p)\n"
+                           "\t2) Выход (e)\n")
+            if action == 'p':
+                button_pushed.set()
+                sleep(0.1)
+                button_pushed.clear()
+            elif action == 'e':
+                traffic_off.set()
+
+    cars_thread_v = Thread(target=cars_traffic, args=['основной дороге'])
+    cars_thread_h = Thread(target=cars_traffic, args=['побочной дороге'])
+    people_thread = Thread(target=people_traffic)
+    menu_thread = Thread(target=traffic_menu)
+    menu_thread.start()
+    cars_thread_v.start()
+    cars_thread_h.start()
+    people_thread.start()
+
+
 if __name__ == '__main__':
-    simple_threads_example()
+    # simple_threads_example()
+    # counter_example()
+    # recursion_threading()
+    # locking_example()
+    traffic_light()

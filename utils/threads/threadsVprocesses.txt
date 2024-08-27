@@ -1,0 +1,2 @@
+https://stackoverflow.com/questions/18114285/what-are-the-differences-between-the-threading-and-multiprocessing-modules
+https://stackoverflow.com/questions/3044580/multiprocessing-vs-threading-python

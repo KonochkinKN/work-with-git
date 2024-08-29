@@ -1,15 +1,19 @@
 import socket
 from _thread import *
- 
+from time import sleep
+
+
 # функция для обработки каждого клиента
-def client_thread (con):
+def client_thread(con):
     data = con.recv(1024)           # получаем данные от клиента
+    sleep(2)
     message = data.decode()         # преобразуем байты в строку
     print(f"Client sent: {message}")
     message = message[::-1]         # инвертируем строку
     con.send(message.encode())      # отправляем сообщение клиенту
     con.close()                     # закрываем подключение
- 
+
+
 server = socket.socket()            # создаем объект сокета сервера
 hostname = socket.gethostname()     # получаем имя хоста локальной машины
 port = 12345                        # устанавливаем порт сервера
